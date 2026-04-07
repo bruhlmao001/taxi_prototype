@@ -24,6 +24,7 @@ MODULE   = $(COCOTB_TEST_MODULES)
 TOPLEVEL = $(COCOTB_TOPLEVEL)
 VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 VERILOG_SOURCES += $(RTL_DIR)/$(DUT).sv
+VERILOG_SOURCES += $(TAXI_SRC_DIR)/axis/rtl/taxi_axis_tie.sv
 VERILOG_SOURCES += $(TAXI_SRC_DIR)/axis/rtl/taxi_axis_if.sv
 
 # handle file list files

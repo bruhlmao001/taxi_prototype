@@ -259,6 +259,7 @@ def test_zircon_ip_len_cksum(request, data_w=32):
     verilog_sources = [
         os.path.join(tests_dir, f"{toplevel}.sv"),
         os.path.join(rtl_dir, f"{dut}.sv"),
+        os.path.join(taxi_src_dir, "axis", "rtl", "taxi_axis_tie.sv"),
         os.path.join(taxi_src_dir, "axis", "rtl", "taxi_axis_if.sv"),
     ]
 

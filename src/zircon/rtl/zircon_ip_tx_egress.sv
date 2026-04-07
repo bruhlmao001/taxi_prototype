@@ -85,16 +85,11 @@ hdr_adapter_inst (
     .m_axis(pkt_parts[0])
 );
 
-assign pkt_parts[1].tdata = s_axis_pkt.tdata;
-assign pkt_parts[1].tkeep = s_axis_pkt.tkeep;
-assign pkt_parts[1].tstrb = s_axis_pkt.tstrb;
-assign pkt_parts[1].tvalid = s_axis_pkt.tvalid;
-assign pkt_parts[1].tlast = s_axis_pkt.tlast;
-assign pkt_parts[1].tid = s_axis_pkt.tid;
-assign pkt_parts[1].tdest = s_axis_pkt.tdest;
-assign pkt_parts[1].tuser = s_axis_pkt.tuser;
-
-assign s_axis_pkt.tready = pkt_parts[1].tready;
+taxi_axis_tie
+axis_tie_pkt_inst (
+    .s_axis(s_axis_pkt),
+    .m_axis(pkt_parts[1])
+);
 
 // combine header and payload
 taxi_axis_concat #(

@@ -84,27 +84,11 @@ logic [ID_W-1:0] m_axis_meta_id_reg = '0;
 logic [DEST_W-1:0] m_axis_meta_dest_reg = '0;
 logic [USER_W-1:0] m_axis_meta_user_reg = '0;
 
-assign m_axis_pkt.tdata = s_axis_pkt.tdata;
-assign m_axis_pkt.tkeep = s_axis_pkt.tkeep;
-assign m_axis_pkt.tstrb = s_axis_pkt.tstrb;
-if (ID_EN) begin
-    assign m_axis_pkt.tid = s_axis_pkt.tid;
-end else begin
-    assign m_axis_pkt.tid = '0;
-end
-if (DEST_EN) begin
-    assign m_axis_pkt.tdest = s_axis_pkt.tdest;
-end else begin
-    assign m_axis_pkt.tdest = '0;
-end
-if (USER_EN) begin
-    assign m_axis_pkt.tuser = s_axis_pkt.tuser;
-end else begin
-    assign m_axis_pkt.tuser = '0;
-end
-assign m_axis_pkt.tlast = s_axis_pkt.tlast;
-assign m_axis_pkt.tvalid = s_axis_pkt.tvalid;
-assign s_axis_pkt.tready = m_axis_pkt.tready;
+taxi_axis_tie
+axis_tie_pkt_inst (
+    .s_axis(s_axis_pkt),
+    .m_axis(m_axis_pkt)
+);
 
 assign m_axis_meta.tdata = {m_axis_meta_csum_reg, m_axis_meta_len_reg};
 assign m_axis_meta.tkeep = '1;
