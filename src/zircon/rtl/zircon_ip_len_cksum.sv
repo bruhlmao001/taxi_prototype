@@ -39,6 +39,9 @@ localparam DATA_W = s_axis_pkt.DATA_W;
 localparam KEEP_W = s_axis_pkt.KEEP_W;
 localparam META_W = m_axis_meta.DATA_W;
 
+localparam BYTE_LANES = KEEP_W;
+localparam BYTE_W = DATA_W/BYTE_LANES;
+
 localparam ID_W = s_axis_pkt.ID_W;
 localparam ID_EN = s_axis_pkt.ID_EN && m_axis_pkt.ID_EN;
 localparam META_ID_EN = s_axis_pkt.ID_EN && m_axis_meta.ID_EN;
@@ -112,10 +115,10 @@ assign m_axis_meta.tlast = 1'b1;
 assign m_axis_meta.tvalid = m_axis_meta_valid_reg;
 
 // Mask input data
-wire [DATA_W-1:0] pkt_data_masked;
+wire [BYTE_LANES-1:0][BYTE_W-1:0] pkt_data_masked;
 
 for (genvar j = 0; j < KEEP_W; j = j + 1) begin
-    assign pkt_data_masked[j*8 +: 8] = (s_axis_pkt.tkeep[j] && mask_reg[j]) ? s_axis_pkt.tdata[j*8 +: 8] : 8'd0;
+    assign pkt_data_masked[j] = (s_axis_pkt.tkeep[j] && mask_reg[j]) ? s_axis_pkt.tdata[j*8 +: 8] : 8'd0;
 end
 
 always_ff @(posedge clk) begin
@@ -123,8 +126,8 @@ always_ff @(posedge clk) begin
 
     if (s_axis_pkt.tvalid && s_axis_pkt.tready) begin
         for (integer i = 0; i < DATA_W/8/4; i = i + 1) begin
-            sum_reg[0][i*17 +: 17] <= {pkt_data_masked[(4*i+0)*8 +: 8], pkt_data_masked[(4*i+1)*8 +: 8]} + {pkt_data_masked[(4*i+2)*8 +: 8], pkt_data_masked[(4*i+3)*8 +: 8]};
-            len_reg[0][i*3 +: 3] <= 3'(s_axis_pkt.tkeep[(4*i+0)]) + 3'(s_axis_pkt.tkeep[(4*i+1)]) + 3'(s_axis_pkt.tkeep[(4*i+2)]) + 3'(s_axis_pkt.tkeep[(4*i+3)]);
+            sum_reg[0][i*17 +: 17] <= {pkt_data_masked[4*i+0], pkt_data_masked[4*i+1]} + {pkt_data_masked[4*i+2], pkt_data_masked[4*i+3]};
+            len_reg[0][i*3 +: 3] <= 3'(s_axis_pkt.tkeep[4*i+0]) + 3'(s_axis_pkt.tkeep[4*i+1]) + 3'(s_axis_pkt.tkeep[4*i+2]) + 3'(s_axis_pkt.tkeep[4*i+3]);
         end
         sum_valid_reg[0] <= 1'b1;
         sum_last_reg[0] <= s_axis_pkt.tlast;
