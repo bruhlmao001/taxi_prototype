@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2025 FPGA Ninja, LLC
+# Copyright (c) 2025-2026 FPGA Ninja, LLC
 #
 # Authors:
 # - Alex Forencich
@@ -8,124 +8,6 @@
 
 # XDC constraints for the Xilinx Alveo U50 board
 # part: xcu50-fsvh2104-2-e
-
-# General configuration
-set_property CFGBVS GND                                [current_design]
-set_property CONFIG_VOLTAGE 1.8                        [current_design]
-set_property BITSTREAM.CONFIG.CONFIGFALLBACK ENABLE    [current_design]
-set_property BITSTREAM.GENERAL.COMPRESS TRUE           [current_design]
-set_property CONFIG_MODE SPIx4                         [current_design]
-set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4           [current_design]
-set_property BITSTREAM.CONFIG.CONFIGRATE 85.0          [current_design]
-set_property BITSTREAM.CONFIG.EXTMASTERCCLK_EN DISABLE [current_design]
-set_property BITSTREAM.CONFIG.SPI_FALL_EDGE YES        [current_design]
-set_property BITSTREAM.CONFIG.UNUSEDPIN PULLUP         [current_design]
-set_property BITSTREAM.CONFIG.SPI_32BIT_ADDR YES       [current_design]
-set_property BITSTREAM.CONFIG.OVERTEMPSHUTDOWN Enable  [current_design]
-
-set_operating_conditions -design_power_budget 63
-
-# System clocks
-# 100 MHz
-#set_property -dict {LOC G17 IOSTANDARD LVDS} [get_ports clk_100mhz_0_p]
-#set_property -dict {LOC G16 IOSTANDARD LVDS} [get_ports clk_100mhz_0_n]
-#create_clock -period 10 -name clk_100mhz_0 [get_ports clk_100mhz_0_p]
-
-# 100 MHz
-#set_property -dict {LOC BB18 IOSTANDARD LVDS} [get_ports clk_100mhz_1_p]
-#set_property -dict {LOC BC18 IOSTANDARD LVDS} [get_ports clk_100mhz_1_n]
-#create_clock -period 10 -name clk_100mhz_1 [get_ports clk_100mhz_1_p]
-
-# LEDs
-set_property -dict {LOC E18 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports qsfp_led_act]
-set_property -dict {LOC E16 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports qsfp_led_stat_g]
-set_property -dict {LOC F17 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports qsfp_led_stat_y]
-
-set_false_path -to [get_ports {qsfp_led_act qsfp_led_stat_g qsfp_led_stat_y}]
-set_output_delay 0 [get_ports {qsfp_led_act qsfp_led_stat_g qsfp_led_stat_y}]
-
-# UART (DMB-1 FT4232H)
-set_property -dict {LOC BE26 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports {uart_txd[0]}] ;# DMB-1 U9.39 CDBUS1 RXD
-set_property -dict {LOC BF26 IOSTANDARD LVCMOS18} [get_ports {uart_rxd[0]}] ;# DMB-1 U9.38 CDBUS0 TXD
-set_property -dict {LOC A17  IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports {uart_txd[1]}] ;# DMB-1 U9.52 DDBUS1 RXD
-set_property -dict {LOC B15  IOSTANDARD LVCMOS18} [get_ports {uart_rxd[1]}] ;# DMB-1 U9.48 DDBUS0 TXD
-set_property -dict {LOC A19  IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports {uart_txd[2]}] ;# DMB-1 U18.39 CDBUS1 RXD
-set_property -dict {LOC A18  IOSTANDARD LVCMOS18} [get_ports {uart_rxd[2]}] ;# DMB-1 U18.38 CDBUS0 TXD
-
-set_false_path -to [get_ports {uart_txd[*]}]
-set_output_delay 0 [get_ports {uart_txd[*]}]
-set_false_path -from [get_ports {uart_rxd[*]}]
-set_input_delay 0 [get_ports {uart_rxd[*]}]
-
-# BMC
-#set_property -dict {LOC C16  IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 4} [get_ports {msp_gpio[0]}]
-#set_property -dict {LOC C17  IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 4} [get_ports {msp_gpio[1]}]
-#set_property -dict {LOC BB25 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 4} [get_ports {msp_uart_txd}]
-#set_property -dict {LOC BB26 IOSTANDARD LVCMOS18} [get_ports {msp_uart_rxd}]
-
-#set_false_path -to [get_ports {msp_uart_txd}]
-#set_output_delay 0 [get_ports {msp_uart_txd}]
-#set_false_path -from [get_ports {msp_gpio[*] msp_uart_rxd}]
-#set_input_delay 0 [get_ports {msp_gpio[*] msp_uart_rxd}]
-
-# HBM overtemp
-set_property -dict {LOC J18 IOSTANDARD LVCMOS18} [get_ports hbm_cattrip]
-
-set_false_path -to [get_ports {hbm_cattrip}]
-set_output_delay 0 [get_ports {hbm_cattrip}]
-
-# SI5394 (SI5394B-A10605-GM)
-# I2C address 0x68
-# IN0: 161.1328125 MHz from qsfp_recclk
-# OUT0: 161.1328125 MHz to qsfp_mgt_refclk_0
-# OUT2: 322.265625 MHz to qsfp_mgt_refclk_1
-# OUT3: 100 MHz to clk_100mhz_0, clk_100mhz_1, pcie_refclk_2, pcie_refclk_3
-#set_property -dict {LOC F20 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports {si5394_rst_b}]
-#set_property -dict {LOC H18 IOSTANDARD LVCMOS18 PULLUP true} [get_ports {si5394_int_b}]
-#set_property -dict {LOC G19 IOSTANDARD LVCMOS18 PULLUP true} [get_ports {si5394_lol_b}]
-#set_property -dict {LOC H19 IOSTANDARD LVCMOS18 PULLUP true} [get_ports {si5394_los_b}]
-#set_property -dict {LOC J16 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8 PULLUP true} [get_ports {si5394_sda}]
-#set_property -dict {LOC L19 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8 PULLUP true} [get_ports {si5394_scl}]
-
-#set_false_path -to [get_ports {si5394_rst_b}]
-#set_output_delay 0 [get_ports {si5394_rst_b}]
-#set_false_path -from [get_ports {si5394_int_b si5394_lol_b si5394_los_b}]
-#set_input_delay 0 [get_ports {si5394_int_b si5394_lol_b si5394_los_b}]
-
-#set_false_path -to [get_ports {si5394_i2c_sda si5394_i2c_scl}]
-#set_output_delay 0 [get_ports {si5394_i2c_sda si5394_i2c_scl}]
-#set_false_path -from [get_ports {si5394_i2c_sda si5394_i2c_scl}]
-#set_input_delay 0 [get_ports {si5394_i2c_sda si5394_i2c_scl}]
-
-# QSFP28 Interfaces
-set_property -dict {LOC J45 } [get_ports {qsfp_rx_p[0]}] ;# MGTYRXP0_131 GTYE4_CHANNEL_X0Y28 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC J46 } [get_ports {qsfp_rx_n[0]}] ;# MGTYRXN0_131 GTYE4_CHANNEL_X0Y28 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC D42 } [get_ports {qsfp_tx_p[0]}] ;# MGTYTXP0_131 GTYE4_CHANNEL_X0Y28 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC D43 } [get_ports {qsfp_tx_n[0]}] ;# MGTYTXN0_131 GTYE4_CHANNEL_X0Y28 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC G45 } [get_ports {qsfp_rx_p[1]}] ;# MGTYRXP1_131 GTYE4_CHANNEL_X0Y29 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC G46 } [get_ports {qsfp_rx_n[1]}] ;# MGTYRXN1_131 GTYE4_CHANNEL_X0Y29 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC C40 } [get_ports {qsfp_tx_p[1]}] ;# MGTYTXP1_131 GTYE4_CHANNEL_X0Y29 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC C41 } [get_ports {qsfp_tx_n[1]}] ;# MGTYTXN1_131 GTYE4_CHANNEL_X0Y29 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC F43 } [get_ports {qsfp_rx_p[2]}] ;# MGTYRXP2_131 GTYE4_CHANNEL_X0Y30 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC F44 } [get_ports {qsfp_rx_n[2]}] ;# MGTYRXN2_131 GTYE4_CHANNEL_X0Y30 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC B42 } [get_ports {qsfp_tx_p[2]}] ;# MGTYTXP2_131 GTYE4_CHANNEL_X0Y30 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC B43 } [get_ports {qsfp_tx_n[2]}] ;# MGTYTXN2_131 GTYE4_CHANNEL_X0Y30 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC E45 } [get_ports {qsfp_rx_p[3]}] ;# MGTYRXP3_131 GTYE4_CHANNEL_X0Y31 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC E46 } [get_ports {qsfp_rx_n[3]}] ;# MGTYRXN3_131 GTYE4_CHANNEL_X0Y31 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC A40 } [get_ports {qsfp_tx_p[3]}] ;# MGTYTXP3_131 GTYE4_CHANNEL_X0Y31 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC A41 } [get_ports {qsfp_tx_n[3]}] ;# MGTYTXN3_131 GTYE4_CHANNEL_X0Y31 / GTYE4_COMMON_X0Y7
-set_property -dict {LOC N36 } [get_ports {qsfp_mgt_refclk_0_p}] ;# MGTREFCLK0P_131 from SI5394 OUT0
-set_property -dict {LOC N37 } [get_ports {qsfp_mgt_refclk_0_n}] ;# MGTREFCLK0N_131 from SI5394 OUT0
-#set_property -dict {LOC M38 } [get_ports {qsfp_mgt_refclk_1_p}] ;# MGTREFCLK1P_131 from SI5394 OUT2
-#set_property -dict {LOC M39 } [get_ports {qsfp_mgt_refclk_1_n}] ;# MGTREFCLK1N_131 from SI5394 OUT2
-#set_property -dict {LOC F19 IOSTANDARD LVDS} [get_ports {qsfp_recclk_p}] ;# to SI5394 IN0
-#set_property -dict {LOC F18 IOSTANDARD LVDS} [get_ports {qsfp_recclk_n}] ;# to SI5394 IN0
-
-# 161.1328125 MHz MGT reference clock (SI5394 OUT0)
-create_clock -period 6.206 -name qsfp_mgt_refclk_0 [get_ports {qsfp_mgt_refclk_0_p}]
-
-# 322.265625 MHz MGT reference clock (SI5394 OUT2)
-#create_clock -period 3.103 -name qsfp_mgt_refclk_1 [get_ports {qsfp_mgt_refclk_1_p}]
 
 # PCIe Interface
 set_property -dict {LOC AL2 } [get_ports {pcie_rx_p[0]}]  ;# MGTYRXP3_227 GTYE4_CHANNEL_X1Y15 / GTYE4_COMMON_X1Y3
@@ -203,10 +85,10 @@ set_property -dict {LOC AF8 } [get_ports {pcie_refclk_1_n}] ;# MGTREFCLK0N_225 (
 set_property -dict {LOC AW27 IOSTANDARD LVCMOS18 PULLUP true} [get_ports {pcie_reset_n}]
 
 # 100 MHz MGT reference clock
-#create_clock -period 10 -name pcie_mgt_refclk_0 [get_ports {pcie_refclk_0_p}]
-create_clock -period 10 -name pcie_mgt_refclk_1 [get_ports {pcie_refclk_1_p}]
-#create_clock -period 10 -name pcie_mgt_refclk_2 [get_ports {pcie_refclk_2_p}]
-#create_clock -period 10 -name pcie_mgt_refclk_3 [get_ports {pcie_refclk_3_p}]
+#create_clock -period 10.000 -name pcie_mgt_refclk_0 [get_ports {pcie_refclk_0_p}]
+create_clock -period 10.000 -name pcie_mgt_refclk_1 [get_ports {pcie_refclk_1_p}]
+#create_clock -period 10.000 -name pcie_mgt_refclk_2 [get_ports {pcie_refclk_2_p}]
+#create_clock -period 10.000 -name pcie_mgt_refclk_3 [get_ports {pcie_refclk_3_p}]
 
 set_false_path -from [get_ports {pcie_reset_n}]
 set_input_delay 0 [get_ports {pcie_reset_n}]
