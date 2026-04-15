@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2025 FPGA Ninja, LLC
+# Copyright (c) 2025-2026 FPGA Ninja, LLC
 #
 # Authors:
 # - Alex Forencich
