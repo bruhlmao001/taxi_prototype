@@ -586,7 +586,7 @@ end else if (HAS_COMMON && GT_TYPE == "GTY" && GT_USP) begin : xcvr
     // UltraScale+ GTY (with common)
 
     taxi_eth_phy_10g_us_gty_full
-    taxi_eth_phy_10g_us_gty_full_inst (
+    gt_ch_inst (
         // Common
         .gtpowergood_out(xcvr_gtpowergood_out),
 
@@ -703,8 +703,8 @@ end else if (HAS_COMMON && GT_TYPE == "GTY" && GT_USP) begin : xcvr
 end else if (HAS_COMMON && GT_TYPE == "GTH" && GT_USP) begin : xcvr
     // UltraScale+ GTH (with common)
 
-    taxi_eth_phy_10g_us_gth_ll_full
-    taxi_eth_phy_10g_us_gth_ll_full_inst (
+    taxi_eth_phy_10g_us_gth_full
+    gt_ch_inst (
         // Common
         .gtpowergood_out(xcvr_gtpowergood_out),
 
@@ -822,7 +822,7 @@ end else if (HAS_COMMON && GT_TYPE == "GTY" && !GT_USP) begin : xcvr
     // UltraScale GTY (with common)
 
     taxi_eth_phy_10g_us_gty_full
-    taxi_eth_phy_10g_us_gty_full_inst (
+    gt_ch_inst (
         // Common
         .gtpowergood_out(xcvr_gtpowergood_out),
 
@@ -940,7 +940,7 @@ end else if (HAS_COMMON && GT_TYPE == "GTH" && !GT_USP) begin : xcvr
     // UltraScale GTH (with common)
 
     taxi_eth_phy_10g_us_gth_full
-    taxi_eth_phy_10g_us_gth_full_inst (
+    gt_ch_inst (
         // Common
         .gtpowergood_out(xcvr_gtpowergood_out),
 
@@ -1058,7 +1058,7 @@ end else if (!HAS_COMMON && GT_TYPE == "GTY") begin : xcvr
     // UltraScale/UltraScale+ GTY (channel only)
 
     taxi_eth_phy_10g_us_gty_ch
-    taxi_eth_phy_10g_us_gty_ch_inst (
+    gt_ch_inst (
         // Common
         .gtpowergood_out(xcvr_gtpowergood_out),
 
@@ -1167,7 +1167,7 @@ end else if (!HAS_COMMON && GT_TYPE == "GTH") begin : xcvr
     // UltraScale/UltraScale+ GTH (channel only)
 
     taxi_eth_phy_10g_us_gth_ch
-    taxi_eth_phy_10g_us_gth_ch_inst (
+    gt_ch_inst (
         // Common
         .gtpowergood_out(xcvr_gtpowergood_out),
 
