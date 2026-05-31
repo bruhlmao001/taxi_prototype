@@ -71,6 +71,7 @@ taxi_axis_baser_tx_64 #(
     .DATA_W(DATA_W),
     .HDR_W(HDR_W),
     .GBX_IF_EN(GBX_IF_EN),
+    .GBX_CNT(GBX_CNT),
     .DIC_EN(DIC_EN),
     .PTP_TS_EN(PTP_TS_EN),
     .PTP_TS_W(PTP_TS_W),
