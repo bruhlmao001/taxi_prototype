@@ -286,12 +286,12 @@ if getattr(cocotb, 'top', None) is not None:
     factory = TestFactory(run_test)
     factory.add_option("payload_lengths", [size_list])
     factory.add_option("payload_data", [incrementing_payload])
-    # factory.add_option("ifg", list(range(0, 13)))
+    factory.add_option("ifg", list(range(0, 13)))
     factory.add_option("gbx_cfg", gbx_cfgs)
     factory.generate_tests()
 
     factory = TestFactory(run_test_oversize)
-    # factory.add_option("ifg", list(range(0, 13)))
+    factory.add_option("ifg", list(range(0, 13)))
     factory.add_option("gbx_cfg", gbx_cfgs)
     factory.generate_tests()
 
