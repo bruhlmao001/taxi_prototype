@@ -19,9 +19,11 @@ TAXI_SRC_DIR = $(LIB_DIR)/taxi/src
 SYN_FILES = $(RTL_DIR)/fpga.sv
 SYN_FILES += $(RTL_DIR)/fpga_core.sv
 SYN_FILES += $(TAXI_SRC_DIR)/eth/rtl/taxi_eth_mac_1g_fifo.f
+SYN_FILES += $(TAXI_SRC_DIR)/eth/rtl/us/taxi_eth_mac_1g_basex_us.f
 SYN_FILES += $(TAXI_SRC_DIR)/xfcp/rtl/taxi_xfcp_if_uart.f
 SYN_FILES += $(TAXI_SRC_DIR)/xfcp/rtl/taxi_xfcp_switch.sv
 SYN_FILES += $(TAXI_SRC_DIR)/xfcp/rtl/taxi_xfcp_mod_i2c_master.f
+SYN_FILES += $(TAXI_SRC_DIR)/xfcp/rtl/taxi_xfcp_mod_apb.f
 SYN_FILES += $(TAXI_SRC_DIR)/xfcp/rtl/taxi_xfcp_mod_stats.f
 SYN_FILES += $(TAXI_SRC_DIR)/sync/rtl/taxi_sync_reset.sv
 SYN_FILES += $(TAXI_SRC_DIR)/sync/rtl/taxi_sync_signal.sv
@@ -40,8 +42,7 @@ XDC_FILES += $(TAXI_SRC_DIR)/sync/syn/vivado/taxi_sync_signal.tcl
 
 # IP
 IP_TCL_FILES = ../ip/sgmii_pcs_pma_0.tcl
-IP_TCL_FILES += ../ip/basex_pcs_pma_0.tcl
-IP_TCL_FILES += ../ip/basex_pcs_pma_1.tcl
+IP_TCL_FILES += $(TAXI_SRC_DIR)/eth/rtl/us/taxi_eth_phy_1g_basex_us_gth_156.tcl
 
 # Configuration
 CONFIG_TCL_FILES = ./config.tcl
